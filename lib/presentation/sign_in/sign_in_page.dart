@@ -33,6 +33,8 @@ class _SignInPageState extends State<SignInPage> {
             ));
           }else if(state is AuthLoading){
             print("loading...");
+          }else if(state is AuthLoginSuccess){
+            context.watch<AuthCubit>().saveStorage(state.dataLogin);
           }else if(state is AuthSuccess){
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
           }
@@ -143,10 +145,10 @@ class _SignInPageState extends State<SignInPage> {
       textColor: Colors.white,
       onPressed: () {
         LoginRequest loginRequest = LoginRequest(
-          email: this._emailController.text, 
-          password: this._passwordController.text
+          email: "eve.holt@reqres.in",
+          password: "cityslicka"
         );
-        context.read<AuthCubit>().signInUser(loginRequest);
+        context.watch<AuthCubit>().signInUser(loginRequest);
       },
       child: Text("Login"),
     );

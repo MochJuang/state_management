@@ -16,30 +16,14 @@ class AuthRepository {
       return right(_loginResponse);
       
     } on DioError catch (e) {
-      String errorMessage = e.response.data.toString();
-      switch (e.type) { 
-        
-        case DioErrorType.CONNECT_TIMEOUT:
-          // TODO: Handle this case.
-          break;
-        case DioErrorType.SEND_TIMEOUT:
-          // TODO: Handle this case.
-          break;
-        case DioErrorType.RECEIVE_TIMEOUT:
-          // TODO: Handle this case.
-          break;
-        case DioErrorType.RESPONSE:
-          errorMessage = e.response.data['error'];
-          break;
-        case DioErrorType.CANCEL:
-          // TODO: Handle this case.
-          break;
-        case DioErrorType.DEFAULT:
-          // TODO: Handle this case.
-          break;
+      String? errorMessage;
+      if(e.type == DioErrorType.response){
+        if(e.response != null){
+          errorMessage = e.response.toString();
+        }
       }
 
-      return left(errorMessage);
+      return errorMessage != null ? left(errorMessage) : left("other Error");
     }
   }
 }
